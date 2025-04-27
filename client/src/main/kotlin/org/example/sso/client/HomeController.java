@@ -40,7 +40,7 @@ public class HomeController {
                            Model model) {
         String resourceResponse = webClient
                 .get()
-                .uri("http://localhost:8090/api/resource")
+                .uri("http://resource.com/api/resource")
                 .attributes(oauth2AuthorizedClient(authorizedClient))
                 .retrieve()
                 .bodyToMono(String.class)

@@ -12,7 +12,7 @@ spring:
         registration:
           client:
             client-id: client
-            client-secret: "{noop}secret"
+            client-secret: secret
             client-authentication-method: client_secret_basic
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
@@ -20,11 +20,11 @@ spring:
             client-name: Client App
         provider:
           client:
-            issuer-uri: http://localhost:9000
-            authorization-uri: http://localhost:9000/oauth2/authorize
-            token-uri: http://localhost:9000/oauth2/token
-            jwk-set-uri: http://localhost:9000/oauth2/jwks
-            user-info-uri: http://localhost:9000/userinfo
+            issuer-uri: http://sso.com
+            authorization-uri: http://sso.com/oauth2/authorize
+            token-uri: http://sso.com/oauth2/token
+            jwk-set-uri: http://sso.com/oauth2/jwks
+            user-info-uri: http://sso.com/userinfo
             user-name-attribute: sub
 
 #spring:

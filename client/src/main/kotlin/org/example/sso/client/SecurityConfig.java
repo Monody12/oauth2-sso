@@ -17,21 +17,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/login", "/favicon.ico").permitAll()
+                        .requestMatchers("/", "/login", "/favicon.ico", "/error").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
-                        .authorizationEndpoint(authorization ->
-                                authorization.authorizationRequestRepository(cookieAuthorizationRequestRepository())
-                        )
+                        //  TODO 调试授权错误时添加
+                        .defaultSuccessUrl("/", true)
+//                        .authorizationEndpoint(authorization ->
+//                                authorization.authorizationRequestRepository(cookieAuthorizationRequestRepository())
+//                        )
                 )
                 .oauth2Client();
 
         return http.build();
     }
-
-    @Bean
-    public AuthorizationRequestRepository<OAuth2AuthorizationRequest> cookieAuthorizationRequestRepository() {
-        return new HttpSessionOAuth2AuthorizationRequestRepository();
-    }
+//
+//    @Bean
+//    public AuthorizationRequestRepository<OAuth2AuthorizationRequest> cookieAuthorizationRequestRepository() {
+//        return new HttpSessionOAuth2AuthorizationRequestRepository();
+//    }
 }

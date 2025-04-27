@@ -6,5 +6,5 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9000
+          issuer-uri: http://sso.com
 #          jwk-set-uri: ${JWK_SET_URI:http://localhost:8080/.well-known/jwks.json}

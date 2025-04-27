@@ -4,6 +4,7 @@ server:
 logging:
   level:
     org.springframework.security: debug
+    org.springframework.security.oauth2: trace
 
 #spring:
 #  datasource:
