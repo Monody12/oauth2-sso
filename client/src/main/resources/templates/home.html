@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Spring OAuth2 OIDC Demo</title>
+    <meta charset="utf-8" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Welcome to Spring OAuth2 OIDC Demo</h1>
+<div>
+    <p>This is a demonstration of OAuth2 and OpenID Connect with Spring Security.</p>
+    <p>
+        <a class="button" th:href="@{/profile}">Login to View Profile</a>
+        <a class="button" th:href="@{/resource}">Access Protected Resource</a>
+    </p>
+</div>
+</body>
+</html>
