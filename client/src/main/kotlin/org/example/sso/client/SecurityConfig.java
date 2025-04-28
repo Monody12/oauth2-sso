@@ -21,8 +21,8 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
-                        //  TODO 调试授权错误时添加
-                        .defaultSuccessUrl("/", true)
+//                          TODO 调试授权错误时添加
+//                        .defaultSuccessUrl("/", true)
 //                        .authorizationEndpoint(authorization ->
 //                                authorization.authorizationRequestRepository(cookieAuthorizationRequestRepository())
 //                        )

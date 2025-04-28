@@ -61,12 +61,18 @@ public class AuthServerConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails user = User.withDefaultPasswordEncoder()
+        var manager = new InMemoryUserDetailsManager();
+        manager.createUser(User.withDefaultPasswordEncoder()
                 .username("user")
                 .password("password")
                 .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(user);
+                .build());
+        manager.createUser(User.withDefaultPasswordEncoder()
+                .username("admin")
+                .password("admin")
+                .roles("ADMIN")
+                .build());
+        return manager;
     }
 
     @Bean
