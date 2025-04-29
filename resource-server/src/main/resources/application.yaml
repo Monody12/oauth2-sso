@@ -4,7 +4,7 @@ server:
 logging:
   level:
     org.springframework.security: trace
-    root: debug
+    root: info
 
 spring:
   security:

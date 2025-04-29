@@ -6,6 +6,7 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
+import lombok.val;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -77,21 +78,35 @@ public class AuthServerConfig {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
-        RegisteredClient client = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("client")
-                .clientSecret("{noop}secret")
+        RegisteredClient client1 = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("client-1")
+                .clientSecret("{noop}secret-1")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://client.com/login/oauth2/code/client")
-                .postLogoutRedirectUri("http://client.com/")
+                .redirectUri("http://client1.com/login/oauth2/code/client")
+                .postLogoutRedirectUri("http://client1.com/")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
                 .clientSettings(ClientSettings.builder()
                         .requireAuthorizationConsent(true)
                         .build())
                 .build();
-        return new InMemoryRegisteredClientRepository(client);
+        RegisteredClient client2 = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("client-2")
+                .clientSecret("{noop}secret-2")
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .redirectUri("http://client2.com/login/oauth2/code/client")
+                .postLogoutRedirectUri("http://client2.com/")
+                .scope(OidcScopes.OPENID)
+                .scope(OidcScopes.PROFILE)
+                .clientSettings(ClientSettings.builder()
+                        .requireAuthorizationConsent(true)
+                        .build())
+                .build();
+        return new InMemoryRegisteredClientRepository(client1, client2);
     }
 
     @Bean
