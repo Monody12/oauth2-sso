@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSO 错误</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; min-height: 90vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
+        .error-container { background-color: #ffffff; padding: 30px 40px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); text-align: center; max-width: 500px; width: 100%; }
+        h1 { color: #dc3545; font-size: 24px; margin-bottom: 15px; }
+        .user-info p { font-size: 16px; color: #333; margin-bottom: 20px; }
+        .user-info strong { color: #007bff; }
+        .error-details { background-color: #ffebee; border: 1px solid #e57373; color: #c62828; padding: 15px; border-radius: 4px; margin-bottom: 25px; text-align: left; }
+        .error-details p { margin: 8px 0; font-size: 15px; }
+        .error-details strong { color: #b71c1c; }
+        .actions button, .actions a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px 5px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            min-width: 120px;
+        }
+        .logout-btn { background-color: #ffc107; color: #212529; }
+        .logout-btn:hover { background-color: #e0a800; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .return-client-btn { background-color: #007bff; color: white; }
+        .return-client-btn:hover { background-color: #0056b3; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .return-client-btn.disabled { background-color: #adb5bd; color: #6c757d; cursor: not-allowed; }
+        .return-client-btn.disabled:hover { background-color: #9fa6ae; }
+    </style>
+</head>
+<body>
+<div class="error-container">
+    <h1>授权处理错误</h1>
+
+    <div th:if="${username != null and !#strings.isEmpty(username)}" class="user-info">
+        <p>当前用户: <strong th:text="${username}">用户</strong></p>
+    </div>
+    <div th:unless="${username != null and !#strings.isEmpty(username)}" class="user-info">
+        <p>无法获取当前用户信息。</p>
+    </div>
+
+    <div class="error-details">
+        <p th:if="${errorCode != null and !#strings.isEmpty(errorCode)}"><strong>错误代码:</strong> <span th:text="${errorCode}"></span></p>
+        <p th:if="${errorMessage != null and !#strings.isEmpty(errorMessage)}"><strong>错误描述:</strong> <span th:text="${errorMessage}"></span></p>
+        <p th:if="${errorUri != null and !#strings.isEmpty(errorUri)}"><strong>更多信息:</strong> <a th:href="${errorUri}" th:text="${errorUri}" target="_blank"></a></p>
+        <p th:unless="${(errorCode != null and !#strings.isEmpty(errorCode)) or
+                           (errorMessage != null and !#strings.isEmpty(errorMessage)) or
+                           (errorUri != null and !#strings.isEmpty(errorUri))}">发生了一个未知错误。</p>
+    </div>
+
+    <div class="actions">
+        <form th:action="@{/logout}" method="post" style="display: inline;">
+            <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}" />
+            <button type="submit" class="logout-btn">退出登录</button>
+        </form>
+
+        <a th:if="${returnToClientUrl != null and !#strings.isEmpty(returnToClientUrl)}" th:href="${returnToClientUrl}" class="return-client-btn">返回客户端</a>
+        <button th:unless="${returnToClientUrl != null and !#strings.isEmpty(returnToClientUrl)}" class="return-client-btn disabled" disabled="disabled">返回客户端 (不可用)</button>
+    </div>
+</div>
+</body>
+</html>

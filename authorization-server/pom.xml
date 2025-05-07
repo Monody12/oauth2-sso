@@ -90,6 +90,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-authorization-server</artifactId>
         </dependency>
+        <!--  页面渲染  -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
         <!--  连接 MySQL 数据库   -->
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.boot</groupId>-->
