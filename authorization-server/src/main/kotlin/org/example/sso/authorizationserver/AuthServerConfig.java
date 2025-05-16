@@ -6,10 +6,12 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.List;
 import java.util.UUID;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.val;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -17,6 +19,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -137,6 +140,13 @@ public class AuthServerConfig {
                         .requestMatchers("/login", "/sso-error", "/assets/**", "/css/**", "/js/**", "/favicon.ico").permitAll()
                         .anyRequest().authenticated()
                 )
+
+                // h2-console debug
+                .csrf(csrf->csrf.ignoringRequestMatchers(PathRequest.toH2Console()))
+                .headers(headers ->
+                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin) // 或者针对H2 console路径单独设置
+                )
+
                 .formLogin(Customizer.withDefaults()); // 使用默认登录页
         return http.build();
     }
@@ -157,52 +167,53 @@ public class AuthServerConfig {
         return manager;
     }
 
-    @Bean
-    public RegisteredClientRepository registeredClientRepository() {
-        RegisteredClient client1 = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("client-1")
-                .clientSecret("{noop}secret-1")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://client1.com/login/oauth2/code/client")
-                .postLogoutRedirectUri("http://client1.com/")
-                .scope(OidcScopes.OPENID)
-                .scope(OidcScopes.PROFILE)
-                .clientSettings(ClientSettings.builder()
-                        .requireAuthorizationConsent(true)
-                        .build())
-                .build();
-        RegisteredClient client2 = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("client-2")
-                .clientSecret("{noop}secret-2")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://client2.com/login/oauth2/code/client")
-                .postLogoutRedirectUri("http://client2.com/")
-                .scope(OidcScopes.OPENID)
-                .scope(OidcScopes.PROFILE)
-                .clientSettings(ClientSettings.builder()
-                        .requireAuthorizationConsent(true)
-                        .build())
-                .build();
-        RegisteredClient client3 = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("client-3")
-                .clientSecret("{noop}secret-3")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://client3.com/login/oauth2/code/client")
-                .postLogoutRedirectUri("http://client3.com/")
-                .scope(OidcScopes.OPENID)
-                .scope(OidcScopes.PROFILE)
-                .clientSettings(ClientSettings.builder()
-                        .requireAuthorizationConsent(true)
-                        .build())
-                .build();
-        return new InMemoryRegisteredClientRepository(client1, client2, client3);
-    }
+
+//    @Bean
+//    public RegisteredClientRepository registeredClientRepository() {
+//        RegisteredClient client1 = RegisteredClient.withId(UUID.randomUUID().toString())
+//                .clientId("client-1")
+//                .clientSecret("{noop}secret-1")
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+//                .redirectUri("http://client1.com/login/oauth2/code/client")
+//                .postLogoutRedirectUri("http://client1.com/")
+//                .scope(OidcScopes.OPENID)
+//                .scope(OidcScopes.PROFILE)
+//                .clientSettings(ClientSettings.builder()
+//                        .requireAuthorizationConsent(true)
+//                        .build())
+//                .build();
+//        RegisteredClient client2 = RegisteredClient.withId(UUID.randomUUID().toString())
+//                .clientId("client-2")
+//                .clientSecret("{noop}secret-2")
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+//                .redirectUri("http://client2.com/login/oauth2/code/client")
+//                .postLogoutRedirectUri("http://client2.com/")
+//                .scope(OidcScopes.OPENID)
+//                .scope(OidcScopes.PROFILE)
+//                .clientSettings(ClientSettings.builder()
+//                        .requireAuthorizationConsent(true)
+//                        .build())
+//                .build();
+//        RegisteredClient client3 = RegisteredClient.withId(UUID.randomUUID().toString())
+//                .clientId("client-3")
+//                .clientSecret("{noop}secret-3")
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+//                .redirectUri("http://client3.com/login/oauth2/code/client")
+//                .postLogoutRedirectUri("http://client3.com/")
+//                .scope(OidcScopes.OPENID)
+//                .scope(OidcScopes.PROFILE)
+//                .clientSettings(ClientSettings.builder()
+//                        .requireAuthorizationConsent(true)
+//                        .build())
+//                .build();
+//        return new InMemoryRegisteredClientRepository(client1, client2, client3);
+//    }
 
     @Bean
     public JWKSource<SecurityContext> jwkSource() {

@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class CustomAuthorizationConsentService implements OAuth2AuthorizationConsentService {
 
     private final OAuth2AuthorizationConsentService delegateService;

@@ -11,51 +11,145 @@ INSERT INTO authorities (username, authority) VALUES
                                                   ('admin', 'ROLE_USER'),
                                                   ('admin', 'ROLE_ADMIN');
 
--- 插入 OAuth2 客户端
--- Client secret for "secret-1": $2a$10$AHqf6a7t0wLz5sN4.H8Uv.TRg.hG5h4y2G8.A.LhN2Y/w0z0i0F.q
--- Client secret for "secret-2": $2a$10$wPZc.NlYQ2N3g5V7.gX72uF8d.Y1Y1Y6.z0.A.LhN2Y/w0z0i0F.q (example, use unique)
--- Client secret for "secret-3": $2a$10$R9P.oP0.kP1.jP2.lP3.oP4.jP5.kP6.lP7.oP8.jP9.kP0.lP1. (example, use unique)
+-- -- 插入 OAuth2 客户端
+-- -- Client secret for "secret-1": $2a$10$AHqf6a7t0wLz5sN4.H8Uv.TRg.hG5h4y2G8.A.LhN2Y/w0z0i0F.q
+-- -- Client secret for "secret-2": $2a$10$wPZc.NlYQ2N3g5V7.gX72uF8d.Y1Y1Y6.z0.A.LhN2Y/w0z0i0F.q (example, use unique)
+-- -- Client secret for "secret-3": $2a$10$R9P.oP0.kP1.jP2.lP3.oP4.jP5.kP6.lP7.oP8.jP9.kP0.lP1. (example, use unique)
+--
+-- INSERT INTO oauth2_registered_client (
+--     id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name,
+--     client_authentication_methods, authorization_grant_types,
+--     redirect_uris, post_logout_redirect_uris, scopes,
+--     client_settings, token_settings
+-- ) VALUES (
+--              'uuid-client-1', 'client-1', CURRENT_TIMESTAMP, '$2a$10$AHqf6a7t0wLz5sN4.H8Uv.TRg.hG5h4y2G8.A.LhN2Y/w0z0i0F.q', NULL, 'Client 1',
+--              'client_secret_basic', 'authorization_code,refresh_token',
+--              'http://client1.com/login/oauth2/code/client', 'http://client1.com/', 'openid,profile,read,write',
+--              '{"settings.client.require-authorization-consent": true, "settings.client.require-proof-key": false}',
+--              '{"settings.token.access-token-format": "self-contained", "settings.token.authorization-code-time-to-live": 300, "settings.token.access-token-time-to-live": 3600, "settings.token.refresh-token-time-to-live": 7200, "settings.token.reuse-refresh-tokens": true, "settings.token.id-token-signature-algorithm": "RS256"}'
+--          );
+--
+-- INSERT INTO oauth2_registered_client (
+--     id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name,
+--     client_authentication_methods, authorization_grant_types,
+--     redirect_uris, post_logout_redirect_uris, scopes,
+--     client_settings, token_settings
+-- ) VALUES (
+--              'uuid-client-2', 'client-2', CURRENT_TIMESTAMP, '$2a$10$wPZc.NlYQ2N3g5V7.gX72uF8d.Y1Y1Y6.z0.A.LhN2Y/w0z0i0F.q', NULL, 'Client 2',
+--              'client_secret_basic', 'authorization_code,refresh_token,client_credentials',
+--              'http://client2.com/login/oauth2/code/client', 'http://client2.com/', 'openid,profile,read',
+--              '{"settings.client.require-authorization-consent": true, "settings.client.require-proof-key": false}',
+--              '{"settings.token.access-token-format": "self-contained", "settings.token.authorization-code-time-to-live": 300, "settings.token.access-token-time-to-live": 1800, "settings.token.refresh-token-time-to-live": 3600, "settings.token.reuse-refresh-tokens": true, "settings.token.id-token-signature-algorithm": "RS256"}'
+--          );
+--
+-- INSERT INTO oauth2_registered_client (
+--     id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name,
+--     client_authentication_methods, authorization_grant_types,
+--     redirect_uris, post_logout_redirect_uris, scopes,
+--     client_settings, token_settings
+-- ) VALUES (
+--              'uuid-client-3', 'client-3', CURRENT_TIMESTAMP, '$2a$10$R9P.oP0.kP1.jP2.lP3.oP4.jP5.kP6.lP7.oP8.jP9.kP0.lP1.', NULL, 'Client 3 (Registrar)',
+--              'client_secret_basic', 'client_credentials', -- For dynamic client registration
+--              '', '', 'client.create,client.read', -- Scopes for DCR
+--              '{"settings.client.require-authorization-consent": false, "settings.client.require-proof-key": false}',
+--              '{"settings.token.access-token-format": "self-contained", "settings.token.access-token-time-to-live": 3600}'
+--          );
+--
 
-INSERT INTO oauth2_registered_client (
-    id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name,
-    client_authentication_methods, authorization_grant_types,
-    redirect_uris, post_logout_redirect_uris, scopes,
-    client_settings, token_settings
-) VALUES (
-             'uuid-client-1', 'client-1', CURRENT_TIMESTAMP, '$2a$10$AHqf6a7t0wLz5sN4.H8Uv.TRg.hG5h4y2G8.A.LhN2Y/w0z0i0F.q', NULL, 'Client 1',
-             'client_secret_basic', 'authorization_code,refresh_token',
-             'http://client1.com/login/oauth2/code/client', 'http://client1.com/', 'openid,profile,read,write',
-             '{"settings.client.require-authorization-consent": true, "settings.client.require-proof-key": false}',
-             '{"settings.token.access-token-format": "self-contained", "settings.token.authorization-code-time-to-live": 300, "settings.token.access-token-time-to-live": 3600, "settings.token.refresh-token-time-to-live": 7200, "settings.token.reuse-refresh-tokens": true, "settings.token.id-token-signature-algorithm": "RS256"}'
-         );
+-- Client 1
+-- INSERT INTO oauth2_client (
+--     id,
+--     client_id,
+--     client_id_issued_at,
+--     client_secret,
+--     client_secret_expires_at,
+--     client_name,
+--     client_authentication_methods,
+--     authorization_grant_types,
+--     redirect_uris,
+--     post_logout_redirect_uris,
+--     scopes,
+--     client_settings,
+--     token_settings
+-- ) VALUES (
+--              'replace-with-actual-uuid-for-client-1', -- 请替换为 client 1 的实际 UUID
+--              'client-1',
+--              CURRENT_TIMESTAMP,
+--              '{noop}secret-1',
+--              NULL,
+--              'client-1', -- 使用 client_id 作为 client_name
+--              'client_secret_basic',
+--              'authorization_code,refresh_token',
+--              'http://client1.com/login/oauth2/code/client',
+--              'http://client1.com/',
+--              'openid,profile',
+--              '{"settings.client.require-authorization-consent":true}',
+--              '{"settings.token.authorization-code-time-to-live":300,"settings.token.access-token-time-to-live":300,"settings.token.device-code-time-to-live":300,"settings.token.refresh-token-time-to-live":3600,"settings.token.reuse-refresh-tokens":true,"settings.token.id-token-signature-algorithm.name":"RS256","settings.token.access-token-format.value":"self-contained"}'
+--          );
+--
+-- -- Client 2
+-- INSERT INTO oauth2_client (
+--     id,
+--     client_id,
+--     client_id_issued_at,
+--     client_secret,
+--     client_secret_expires_at,
+--     client_name,
+--     client_authentication_methods,
+--     authorization_grant_types,
+--     redirect_uris,
+--     post_logout_redirect_uris,
+--     scopes,
+--     client_settings,
+--     token_settings
+-- ) VALUES (
+--              'replace-with-actual-uuid-for-client-2', -- 请替换为 client 2 的实际 UUID
+--              'client-2',
+--              CURRENT_TIMESTAMP,
+--              '{noop}secret-2',
+--              NULL,
+--              'client-2', -- 使用 client_id 作为 client_name
+--              'client_secret_basic',
+--              'authorization_code,refresh_token',
+--              'http://client2.com/login/oauth2/code/client',
+--              'http://client2.com/',
+--              'openid,profile',
+--              '{"settings.client.require-authorization-consent":true}',
+--              '{"settings.token.authorization-code-time-to-live":300,"settings.token.access-token-time-to-live":300,"settings.token.device-code-time-to-live":300,"settings.token.refresh-token-time-to-live":3600,"settings.token.reuse-refresh-tokens":true,"settings.token.id-token-signature-algorithm.name":"RS256","settings.token.access-token-format.value":"self-contained"}'
+--          );
+--
+-- -- Client 3
+-- INSERT INTO oauth2_client (
+--     id,
+--     client_id,
+--     client_id_issued_at,
+--     client_secret,
+--     client_secret_expires_at,
+--     client_name,
+--     client_authentication_methods,
+--     authorization_grant_types,
+--     redirect_uris,
+--     post_logout_redirect_uris,
+--     scopes,
+--     client_settings,
+--     token_settings
+-- ) VALUES (
+--              'replace-with-actual-uuid-for-client-3', -- 请替换为 client 3 的实际 UUID
+--              'client-3',
+--              CURRENT_TIMESTAMP,
+--              '{noop}secret-3',
+--              NULL,
+--              'client-3', -- 使用 client_id 作为 client_name
+--              'client_secret_basic',
+--              'authorization_code,refresh_token',
+--              'http://client3.com/login/oauth2/code/client',
+--              'http://client3.com/',
+--              'openid,profile',
+--              '{"settings.client.require-authorization-consent":true}',
+--              '{"settings.token.authorization-code-time-to-live":300,"settings.token.access-token-time-to-live":300,"settings.token.device-code-time-to-live":300,"settings.token.refresh-token-time-to-live":3600,"settings.token.reuse-refresh-tokens":true,"settings.token.id-token-signature-algorithm.name":"RS256","settings.token.access-token-format.value":"self-contained"}'
+--          );
 
-INSERT INTO oauth2_registered_client (
-    id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name,
-    client_authentication_methods, authorization_grant_types,
-    redirect_uris, post_logout_redirect_uris, scopes,
-    client_settings, token_settings
-) VALUES (
-             'uuid-client-2', 'client-2', CURRENT_TIMESTAMP, '$2a$10$wPZc.NlYQ2N3g5V7.gX72uF8d.Y1Y1Y6.z0.A.LhN2Y/w0z0i0F.q', NULL, 'Client 2',
-             'client_secret_basic', 'authorization_code,refresh_token,client_credentials',
-             'http://client2.com/login/oauth2/code/client', 'http://client2.com/', 'openid,profile,read',
-             '{"settings.client.require-authorization-consent": true, "settings.client.require-proof-key": false}',
-             '{"settings.token.access-token-format": "self-contained", "settings.token.authorization-code-time-to-live": 300, "settings.token.access-token-time-to-live": 1800, "settings.token.refresh-token-time-to-live": 3600, "settings.token.reuse-refresh-tokens": true, "settings.token.id-token-signature-algorithm": "RS256"}'
-         );
-
-INSERT INTO oauth2_registered_client (
-    id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name,
-    client_authentication_methods, authorization_grant_types,
-    redirect_uris, post_logout_redirect_uris, scopes,
-    client_settings, token_settings
-) VALUES (
-             'uuid-client-3', 'client-3', CURRENT_TIMESTAMP, '$2a$10$R9P.oP0.kP1.jP2.lP3.oP4.jP5.kP6.lP7.oP8.jP9.kP0.lP1.', NULL, 'Client 3 (Registrar)',
-             'client_secret_basic', 'client_credentials', -- For dynamic client registration
-             '', '', 'client.create,client.read', -- Scopes for DCR
-             '{"settings.client.require-authorization-consent": false, "settings.client.require-proof-key": false}',
-             '{"settings.token.access-token-format": "self-contained", "settings.token.access-token-time-to-live": 3600}'
-         );
-
--- 可以在此处添加 oauth2_authorization_consent 表的初始数据，如果需要预设同意记录
--- 例如:
--- INSERT INTO oauth2_authorization_consent (registered_client_id, principal_name, authorities) VALUES
---    ('uuid-client-1', 'user', 'openid,profile,read');
+-- -- 可以在此处添加 oauth2_authorization_consent 表的初始数据，如果需要预设同意记录
+-- -- 例如:
+-- -- INSERT INTO oauth2_authorization_consent (registered_client_id, principal_name, authorities) VALUES
+-- --    ('uuid-client-1', 'user', 'openid,profile,read');
