@@ -1,9 +1,9 @@
 -- 插入用户 (密码: "password" 和 "admin")
 -- BCrypt hash for "password": $2a$10$N0g8G3hC9uS2OTq2N.nLDe.iuLzTLuA05Y099oawN509o8aYyln/O
 -- BCrypt hash for "admin": $2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQpHXZ.
-INSERT INTO users (username, password, enabled) VALUES
-                                                    ('user', '$2a$10$N0g8G3hC9uS2OTq2N.nLDe.iuLzTLuA05Y099oawN509o8aYyln/O', TRUE),
-                                                    ('admin', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQpHXZ.', TRUE);
+-- INSERT INTO users (username, password, enabled) VALUES
+--                                                     ('user', '$2a$10$N0g8G3hC9uS2OTq2N.nLDe.iuLzTLuA05Y099oawN509o8aYyln/O', TRUE),
+--                                                     ('admin', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQpHXZ.', TRUE);
 
 -- 插入用户权限
 INSERT INTO authorities (username, authority) VALUES

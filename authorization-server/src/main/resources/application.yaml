@@ -4,6 +4,7 @@ server:
 logging:
   level:
     org.springframework.security.oauth2: trace
+    org.springframework.security: trace
     root: info
 
 spring:
@@ -19,7 +20,7 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       # 使用 schema.sql 和 data.sql, 因此关闭自动DDL
-      ddl-auto: none
+      ddl-auto: create
     # 显示SQL语句，生产环境关闭
     show-sql: true
   # H2 Console
@@ -35,7 +36,9 @@ spring:
     init:
       # 始终执行 schema.sql 和 data.sql
       mode: always
-      schema-locations: classpath:schema.sql
-      data-locations: classpath:data.sql
-      # 初始化出错结束应用
+      schema-locations: ""
+#      schema-locations: classpath:schema.sql
+      # 设置为空字符串，不初始化数据
+      data-locations: ""
+#       初始化出错结束应用
       continue-on-error: false

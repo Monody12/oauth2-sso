@@ -11,11 +11,16 @@ import java.util.UUID;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.val;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,6 +30,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -54,7 +61,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = false)
 public class AuthServerConfig {
 
     @Bean
@@ -66,7 +73,7 @@ public class AuthServerConfig {
                 .authorizationEndpoint(new Customizer<OAuth2AuthorizationEndpointConfigurer>() {
                     @Override
                     public void customize(OAuth2AuthorizationEndpointConfigurer oAuth2AuthorizationEndpointConfigurer) {
-                        oAuth2AuthorizationEndpointConfigurer.errorResponseHandler(yourCustomAuthenticationFailureHandler());
+                        oAuth2AuthorizationEndpointConfigurer.errorResponseHandler(myCustomAuthenticationFailureHandler());
                     }
                 });
         http.exceptionHandling(exceptions ->
@@ -75,7 +82,7 @@ public class AuthServerConfig {
         return http.build();
     }
 
-    private AuthenticationFailureHandler yourCustomAuthenticationFailureHandler() {
+    private AuthenticationFailureHandler myCustomAuthenticationFailureHandler() {
         return (request, response, exception) -> {
             String ssoErrorPageUrl = "/sso-error"; // 你的SSO错误页面路径
             UriComponentsBuilder errorPageUriBuilder = UriComponentsBuilder.fromPath(ssoErrorPageUrl);
@@ -123,14 +130,6 @@ public class AuthServerConfig {
         };
     }
 
-//    @Bean
-//    @Order(2)
-//    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-//        http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
-//                .formLogin(Customizer.withDefaults());
-//        return http.build();
-//    }
-
     @Bean
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -152,68 +151,22 @@ public class AuthServerConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        var manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build());
-        manager.createUser(User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("admin")
-                .roles("ADMIN")
-                .build());
-        return manager;
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
+    }
 
-//    @Bean
-//    public RegisteredClientRepository registeredClientRepository() {
-//        RegisteredClient client1 = RegisteredClient.withId(UUID.randomUUID().toString())
-//                .clientId("client-1")
-//                .clientSecret("{noop}secret-1")
-//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-//                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-//                .redirectUri("http://client1.com/login/oauth2/code/client")
-//                .postLogoutRedirectUri("http://client1.com/")
-//                .scope(OidcScopes.OPENID)
-//                .scope(OidcScopes.PROFILE)
-//                .clientSettings(ClientSettings.builder()
-//                        .requireAuthorizationConsent(true)
-//                        .build())
-//                .build();
-//        RegisteredClient client2 = RegisteredClient.withId(UUID.randomUUID().toString())
-//                .clientId("client-2")
-//                .clientSecret("{noop}secret-2")
-//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-//                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-//                .redirectUri("http://client2.com/login/oauth2/code/client")
-//                .postLogoutRedirectUri("http://client2.com/")
-//                .scope(OidcScopes.OPENID)
-//                .scope(OidcScopes.PROFILE)
-//                .clientSettings(ClientSettings.builder()
-//                        .requireAuthorizationConsent(true)
-//                        .build())
-//                .build();
-//        RegisteredClient client3 = RegisteredClient.withId(UUID.randomUUID().toString())
-//                .clientId("client-3")
-//                .clientSecret("{noop}secret-3")
-//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-//                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-//                .redirectUri("http://client3.com/login/oauth2/code/client")
-//                .postLogoutRedirectUri("http://client3.com/")
-//                .scope(OidcScopes.OPENID)
-//                .scope(OidcScopes.PROFILE)
-//                .clientSettings(ClientSettings.builder()
-//                        .requireAuthorizationConsent(true)
-//                        .build())
-//                .build();
-//        return new InMemoryRegisteredClientRepository(client1, client2, client3);
-//    }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationProvider authenticationProvider) {
+        return new ProviderManager(authenticationProvider);
+    }
 
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
