@@ -2,6 +2,7 @@ package org.example.sso.authorizationserver.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.sso.authorizationserver.config.CustomUserDetailsMixin;
 import org.example.sso.authorizationserver.entity.Client;
 import org.springframework.security.jackson2.SecurityJackson2Modules;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -36,6 +37,8 @@ public class JpaRegisteredClientRepository implements RegisteredClientRepository
         List<com.fasterxml.jackson.databind.Module> securityModules = SecurityJackson2Modules.getModules(classLoader);
         this.objectMapper.registerModules(securityModules);
         this.objectMapper.registerModule(new OAuth2AuthorizationServerJackson2Module());
+
+        this.objectMapper.addMixIn(org.example.sso.authorizationserver.entity.CustomUserDetails.class, CustomUserDetailsMixin.class);
     }
 
     @Override
