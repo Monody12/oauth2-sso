@@ -157,52 +157,52 @@ public class AuthServerConfig {
         return manager;
     }
 
-    @Bean
-    public RegisteredClientRepository registeredClientRepository() {
-        RegisteredClient client1 = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("client-1")
-                .clientSecret("{noop}secret-1")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://client1.com/login/oauth2/code/client")
-                .postLogoutRedirectUri("http://client1.com/")
-                .scope(OidcScopes.OPENID)
-                .scope(OidcScopes.PROFILE)
-                .clientSettings(ClientSettings.builder()
-                        .requireAuthorizationConsent(true)
-                        .build())
-                .build();
-        RegisteredClient client2 = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("client-2")
-                .clientSecret("{noop}secret-2")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://client2.com/login/oauth2/code/client")
-                .postLogoutRedirectUri("http://client2.com/")
-                .scope(OidcScopes.OPENID)
-                .scope(OidcScopes.PROFILE)
-                .clientSettings(ClientSettings.builder()
-                        .requireAuthorizationConsent(true)
-                        .build())
-                .build();
-        RegisteredClient client3 = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("client-3")
-                .clientSecret("{noop}secret-3")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://client3.com/login/oauth2/code/client")
-                .postLogoutRedirectUri("http://client3.com/")
-                .scope(OidcScopes.OPENID)
-                .scope(OidcScopes.PROFILE)
-                .clientSettings(ClientSettings.builder()
-                        .requireAuthorizationConsent(true)
-                        .build())
-                .build();
-        return new InMemoryRegisteredClientRepository(client1, client2, client3);
-    }
+//    @Bean
+//    public RegisteredClientRepository registeredClientRepository() {
+//        RegisteredClient client1 = RegisteredClient.withId(UUID.randomUUID().toString())
+//                .clientId("client-1")
+//                .clientSecret("{noop}secret-1")
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+//                .redirectUri("http://client1.com/login/oauth2/code/client")
+//                .postLogoutRedirectUri("http://client1.com/")
+//                .scope(OidcScopes.OPENID)
+//                .scope(OidcScopes.PROFILE)
+//                .clientSettings(ClientSettings.builder()
+//                        .requireAuthorizationConsent(true)
+//                        .build())
+//                .build();
+//        RegisteredClient client2 = RegisteredClient.withId(UUID.randomUUID().toString())
+//                .clientId("client-2")
+//                .clientSecret("{noop}secret-2")
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+//                .redirectUri("http://client2.com/login/oauth2/code/client")
+//                .postLogoutRedirectUri("http://client2.com/")
+//                .scope(OidcScopes.OPENID)
+//                .scope(OidcScopes.PROFILE)
+//                .clientSettings(ClientSettings.builder()
+//                        .requireAuthorizationConsent(true)
+//                        .build())
+//                .build();
+//        RegisteredClient client3 = RegisteredClient.withId(UUID.randomUUID().toString())
+//                .clientId("client-3")
+//                .clientSecret("{noop}secret-3")
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+//                .redirectUri("http://client3.com/login/oauth2/code/client")
+//                .postLogoutRedirectUri("http://client3.com/")
+//                .scope(OidcScopes.OPENID)
+//                .scope(OidcScopes.PROFILE)
+//                .clientSettings(ClientSettings.builder()
+//                        .requireAuthorizationConsent(true)
+//                        .build())
+//                .build();
+//        return new InMemoryRegisteredClientRepository(client1, client2, client3);
+//    }
 
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
