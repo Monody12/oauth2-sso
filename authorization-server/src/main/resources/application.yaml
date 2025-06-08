@@ -35,9 +35,9 @@ spring:
   sql:
     init:
       # 始终执行 schema.sql 和 data.sql
-      mode: always
-      schema-locations: ""
-#      schema-locations: classpath:schema.sql
+      mode: never
+#      schema-locations: ""
+      schema-locations: classpath:schema.sql
       # 设置为空字符串，不初始化数据
       data-locations: ""
 #       初始化出错结束应用

@@ -289,6 +289,6 @@ public class JpaOAuth2AuthorizationService implements OAuth2AuthorizationService
         } else if (AuthorizationGrantType.DEVICE_CODE.getValue().equals(authorizationGrantType)) {
             return AuthorizationGrantType.DEVICE_CODE;
         }
-        return new AuthorizationGrantType(authorizationGrantType);              // Custom authorization grant type
+        return new AuthorizationGrantType(authorizationGrantType);
     }
 }
