@@ -1,4 +1,4 @@
-package org.example.sso.authorizationserver;
+package org.example.sso.authorizationserver.config;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -8,8 +8,6 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.val;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -20,7 +18,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -141,21 +138,21 @@ public class AuthServerConfig {
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        var manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build());
-        manager.createUser(User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("admin")
-                .roles("ADMIN")
-                .build());
-        return manager;
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        var manager = new InMemoryUserDetailsManager();
+//        manager.createUser(User.withDefaultPasswordEncoder()
+//                .username("user")
+//                .password("password")
+//                .roles("USER")
+//                .build());
+//        manager.createUser(User.withDefaultPasswordEncoder()
+//                .username("admin")
+//                .password("admin")
+//                .roles("ADMIN")
+//                .build());
+//        return manager;
+//    }
 
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
