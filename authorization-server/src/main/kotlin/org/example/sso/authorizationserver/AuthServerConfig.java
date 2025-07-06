@@ -51,7 +51,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class AuthServerConfig {
 
     @Bean
