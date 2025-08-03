@@ -34,6 +34,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         sysUserDto.setAuthorities(authorityList);
         sysUserDto.setId(sysUser.getId());
         sysUserDto.setAvatar(sysUser.getAvatar());
+        sysUserDto.setEmail(sysUser.getEmail());
+        sysUserDto.setIdNumber(sysUser.getIdNumber());
 
         sysUserDto.setPassword(passwordEncoder.encode(sysUser.getPassword()));
         sysUserDto.setStatus(sysUser.getStatus());

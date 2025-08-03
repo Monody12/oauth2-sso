@@ -39,6 +39,14 @@ public class SysUserDo implements Serializable {
      */
     private String avatar;
     /**
+     * 邮箱
+     */
+    private String email;
+    /**
+     * 身份证号
+     */
+    private String idNumber;
+    /**
      * 账号状态(0:无效；1:有效)
      */
     private Integer status;

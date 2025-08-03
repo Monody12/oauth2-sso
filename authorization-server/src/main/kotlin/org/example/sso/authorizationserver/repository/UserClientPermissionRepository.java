@@ -21,6 +21,7 @@ public class UserClientPermissionRepository {
         var map = new HashMap<String, Collection<String>>();
         map.put("user", Arrays.asList("client-1", "client-3"));
         map.put("admin", Arrays.asList("client-1", "client-2", "client-3"));
+        map.put("test", Arrays.asList("client-1", "client-2", "client-3"));
         map.forEach((username, allowClientName) -> {
             var set = new HashSet<String>();
             allowClientName.forEach(clientName -> {
