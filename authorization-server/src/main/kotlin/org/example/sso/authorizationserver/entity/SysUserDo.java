@@ -19,9 +19,17 @@ public class SysUserDo implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
     /**
-     * 用户名称
+     * 用户名
      */
-    private String name;
+    private String username;
+    /**
+     * 昵称
+     */
+    private String nickname;
+    /**
+     * 部门id（用户在公司内部的直属部门id）
+     */
+    private Integer departmentId;
     /**
      * 密码
      */

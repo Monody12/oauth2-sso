@@ -12,7 +12,7 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUserDo> implem
 
     public SysUserDo findByUsername(String username) {
         var wrapper = Wrappers.lambdaQuery(SysUserDo.class);
-        wrapper.eq(SysUserDo::getName, username);
+        wrapper.eq(SysUserDo::getUsername, username);
         return this.getOne(wrapper);
     }
 

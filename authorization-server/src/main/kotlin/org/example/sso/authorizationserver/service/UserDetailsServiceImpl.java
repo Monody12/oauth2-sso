@@ -25,12 +25,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SysUserDo sysUser = userService.findByUsername(username);
         if (sysUser == null) {
-            throw new RuntimeException("用户：" +  username + "未注册");
+            throw new RuntimeException("用户：" + username + "未注册");
         }
         // 后续自行修改和完善
-        List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList("/oauth2/token", "/oauth2/authorize","/authorized");
+        List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList("/oauth2/token", "/oauth2/authorize", "/authorized");
         SysUserDto sysUserDto = new SysUserDto();
         sysUserDto.setUsername(username);
+        sysUserDto.setNickname(sysUser.getNickname());
+        sysUserDto.setDepartmentId(sysUser.getDepartmentId());
         sysUserDto.setAuthorities(authorityList);
         sysUserDto.setId(sysUser.getId());
         sysUserDto.setAvatar(sysUser.getAvatar());

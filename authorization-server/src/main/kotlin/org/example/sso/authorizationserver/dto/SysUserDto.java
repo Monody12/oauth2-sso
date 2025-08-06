@@ -37,7 +37,15 @@ public class SysUserDto implements UserDetails, Serializable {
      */
     private String username;
     /**
-     * 用户名
+     * 昵称
+     */
+    private String nickname;
+    /**
+     * 部门id（用户在公司内部的直属部门id）
+     */
+    private Integer departmentId;
+    /**
+     * 密码
      */
     private String password;
     /**
