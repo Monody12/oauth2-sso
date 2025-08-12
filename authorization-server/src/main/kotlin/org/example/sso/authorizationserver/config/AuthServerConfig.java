@@ -55,7 +55,9 @@ public class AuthServerConfig {
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
+        http
+                .securityMatcher("/oauth2/**", "/.well-known/**")
+                .getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults())
                 .authorizationEndpoint(new Customizer<OAuth2AuthorizationEndpointConfigurer>() {
                     @Override
@@ -66,6 +68,25 @@ public class AuthServerConfig {
         http.exceptionHandling(exceptions ->
                         exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")))
                 .cors(Customizer.withDefaults());
+        return http.build();
+    }
+
+    @Bean
+    @Order(2)
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(authorize -> authorize
+                        // 允许访问登录页、错误页和静态资源
+                        .requestMatchers("/login", "/sso-error", "/assets/**", "/css/**", "/js/**", "/favicon.ico", "/error").permitAll()
+                        .anyRequest().authenticated()
+                )
+//                .formLogin(Customizer.withDefaults()); // 使用默认登录页
+                .formLogin(formLogin -> formLogin
+                        // 指定自定义的登录页面URL
+                        .loginPage("/login")
+                        // 允许所有用户访问登录页面
+                        .permitAll()
+                );
         return http.build();
     }
 
@@ -115,27 +136,6 @@ public class AuthServerConfig {
 
             response.sendRedirect(errorPageUriBuilder.build().encode().toUriString());
         };
-    }
-
-//    @Bean
-//    @Order(2)
-//    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-//        http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
-//                .formLogin(Customizer.withDefaults());
-//        return http.build();
-//    }
-
-    @Bean
-    @Order(2)
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(authorize -> authorize
-                        // 允许访问登录页、错误页和静态资源
-                        .requestMatchers("/login", "/sso-error", "/assets/**", "/css/**", "/js/**", "/favicon.ico").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .formLogin(Customizer.withDefaults()); // 使用默认登录页
-        return http.build();
     }
 
 //    @Bean

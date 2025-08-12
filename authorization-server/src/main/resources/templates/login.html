@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <style>
+        /* 你可以在这里添加一些样式 */
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .login-container { border: 1px solid #ccc; padding: 2rem; border-radius: 8px; }
+        .form-group { margin-bottom: 1rem; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2>自定义登录页面</h2>
+
+    <div th:if="${param.error}" class="error">
+        用户名或密码错误，请重试。
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <div class="form-group">
+            <label for="username">用户名:</label>
+            <input type="text" id="username" name="username" required autofocus />
+        </div>
+        <div class="form-group">
+            <label for="password">密码:</label>
+            <input type="password" id="password" name="password" required />
+        </div>
+
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <button type="submit">登录</button>
+    </form>
+</div>
+</body>
+</html>

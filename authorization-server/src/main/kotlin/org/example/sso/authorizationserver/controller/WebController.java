@@ -17,6 +17,12 @@ import java.nio.charset.StandardCharsets;
 
 @Controller
 public class WebController {
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @GetMapping("/sso-error")
     public String ssoErrorPage(
             @RequestParam(name = OAuth2ParameterNames.ERROR, required = false) String errorCode,
