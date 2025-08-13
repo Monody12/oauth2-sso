@@ -1,24 +1,38 @@
 package org.example.sso.authorizationserver.config;
 
+import lombok.RequiredArgsConstructor;
 import org.example.sso.authorizationserver.dto.SysUserDto;
+import org.example.sso.authorizationserver.service.AuthServiceImpl;
+import org.example.sso.authorizationserver.service.PermissionService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 
 import java.util.Set;
 
 @Configuration
+@RequiredArgsConstructor
 public class OAuth2TokenConfig {
+    private final PermissionService permissionService;
+    private final AuthServiceImpl authService;
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
         return (context) -> {
+            Authentication principal = context.getPrincipal();
+            // Access Token
+            if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
+                String clientId = context.getRegisteredClient().getClientId();
+                Set<GrantedAuthority> authorities = authService.getAuthoritiesForUserInSystem(1, clientId);
+                System.out.println(authorities);
+            }
             // 仅当令牌是 OIDC ID Token 时才自定义
             if (context.getTokenType().getValue().equals("id_token")) {
-                Authentication principal = context.getPrincipal();
                 // 假设你的 principal 是一个 UserDetails 对象或自定义的用户对象
                 if (principal.getPrincipal() instanceof SysUserDto user) { // 替换成你自己的用户类
                     // 这里你可以从数据库、缓存或其他服务中获取用户信息
