@@ -17,7 +17,7 @@ public class SysUserDo implements Serializable {
      * id
      */
     @TableId(type = IdType.AUTO)
-    private Long id;
+    private Integer id;
     /**
      * 用户名
      */

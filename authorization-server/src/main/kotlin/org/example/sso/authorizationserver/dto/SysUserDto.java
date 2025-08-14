@@ -27,7 +27,7 @@ public class SysUserDto implements UserDetails, Serializable {
     /**
      * id
      */
-    private Long id;
+    private Integer id;
     /**
      * 手机号(未加密)
      */
