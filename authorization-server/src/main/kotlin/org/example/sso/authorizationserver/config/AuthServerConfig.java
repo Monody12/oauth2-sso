@@ -34,6 +34,7 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -54,9 +55,15 @@ public class AuthServerConfig {
     @Bean
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+        // 授权服务器默认端点
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         http
-                .securityMatcher("/oauth2/**", "/.well-known/**")
+                .securityMatcher(
+                        "/oauth2/**",
+                        "/.well-known/**",
+                        "/userinfo", // 添加 UserInfo 端点
+                        "/connect/register" // 添加客户端注册端点
+                )
                 .getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults())
                 .authorizationEndpoint(new Customizer<OAuth2AuthorizationEndpointConfigurer>() {
@@ -64,7 +71,7 @@ public class AuthServerConfig {
                     public void customize(OAuth2AuthorizationEndpointConfigurer oAuth2AuthorizationEndpointConfigurer) {
                         oAuth2AuthorizationEndpointConfigurer.errorResponseHandler(yourCustomAuthenticationFailureHandler());
                     }
-                });
+                });// 关键：让 Authorization Server 也能作为 Resource Server 去接受 Bearer JWT
         http.exceptionHandling(exceptions ->
                         exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")))
                 .cors(Customizer.withDefaults());

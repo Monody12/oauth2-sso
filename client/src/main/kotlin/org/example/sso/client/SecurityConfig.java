@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 public class SecurityConfig {
 
     @Bean
@@ -21,6 +21,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
+                                .userInfoEndpoint(userInfo -> userInfo.oidcUserService(new LoggingOidcUserService()))
 //                          TODO 调试授权错误时添加
 //                        .defaultSuccessUrl("/", true)
 //                        .authorizationEndpoint(authorization ->
