@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OAuth2TokenConfig {
     private final AuthServiceImpl authService;
-    private final ObjectMapper objectMapper;
 
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
