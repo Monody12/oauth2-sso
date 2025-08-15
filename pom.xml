@@ -25,6 +25,7 @@
         <module>authorization-server</module>
         <module>resource-server</module>
         <module>client</module>
+        <module>resource-server-starter</module>
     </modules>
     <scm>
         <connection/>
