@@ -35,4 +35,10 @@ public class ResourceController {
     public Map<String, Object> user(@AuthenticationPrincipal Jwt jwt) {
         return Collections.singletonMap("message", "User resource accessed by: user");
     }
+
+    @GetMapping("/test")
+    @PreAuthorize("hasAnyAuthority('client1:test')")
+    public Map<String, Object> test(@AuthenticationPrincipal Jwt jwt) {
+        return Collections.singletonMap("message", "Nobody can access this resource");
+    }
 }
