@@ -15,6 +15,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -62,7 +63,8 @@ public class AuthServerConfig {
                         "/oauth2/**",
                         "/.well-known/**",
                         "/userinfo", // 添加 UserInfo 端点
-                        "/connect/register" // 添加客户端注册端点
+                        "/connect/register", // 添加客户端注册端点
+                        "/connect/logout" // 添加客户端登出端点
                 )
                 .getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults())

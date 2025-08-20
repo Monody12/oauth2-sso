@@ -58,6 +58,9 @@
     <p>
         <a class="button" th:href="@{/resource}">Access Protected Resource</a>
         <a class="button" th:href="@{/}">Home</a>
+        <form th:action="@{/logout}" method="post">
+            <button class="button" type="submit">Logout</button>
+        </form>
     </p>
 </div>
 </body>
