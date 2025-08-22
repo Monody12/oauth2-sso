@@ -15,6 +15,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -89,13 +90,14 @@ public class AuthServerConfig {
                         .requestMatchers("/login", "/sso-error", "/assets/**", "/css/**", "/js/**", "/favicon.ico", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin(Customizer.withDefaults()); // 使用默认登录页
-//                .formLogin(formLogin -> formLogin
-//                        // 指定自定义的登录页面URL
-//                        .loginPage("/login")
-//                        // 允许所有用户访问登录页面
-//                        .permitAll()
-//                );
+                .csrf(AbstractHttpConfigurer::disable)
+//                .formLogin(Customizer.withDefaults()); // 使用默认登录页
+                .formLogin(formLogin -> formLogin
+                        // 指定自定义的登录页面URL
+                        .loginPage("/login")
+                        // 允许所有用户访问登录页面
+                        .permitAll()
+                );
         return http.build();
     }
 
